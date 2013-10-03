@@ -1,0 +1,8 @@
+pyramid
+transaction
+pyramid_tm
+pyramid_debugtoolbar
+zope.sqlalchemy
+waitress
+MySQL-python==1.2.4
+SQLAlchemy
