@@ -1,0 +1,1 @@
+mysqldump -p --host=newsql5.cv.nrao.edu --user=splat --password=W6AuH9VU splat main > main.sql

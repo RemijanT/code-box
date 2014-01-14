@@ -371,7 +371,7 @@
 		<div class="bottom">
 			<hr>
 			<center>
-				<h2 id="bottom_message">Welcome to the “New” Splatalogue!</h2>
+				<h2 id="bottom_message">Welcome to the &quot;New&quot; Splatalogue!</h2>
 			</center>
 			<br>
 			<p>
@@ -417,7 +417,8 @@
 		</div>
 		<hr>
 		<div class="footer">
-			<p>&copy;2012 All Rights Reserved. &nbsp;&bull;&nbsp; Splatalogue.net.</p>
+			<p>&copy;2012 All Rights Reserved. &nbsp;&bull;&nbsp; Splatalogue.net. &nbsp;&bull;&nbsp; Last built on ${retval.modifieddate}.</p>
+			 
 		</div>
 				
 	</body>
