@@ -27,7 +27,7 @@
 from pyramid.paster import get_app, setup_logging
 import os
 import site  # PPM; SWW, please sanity check these two lines
-site.addsitedir('/export/home/wdgweb-alpha/wdgweb-alpha.cv.nrao.edu/active/pyramid/code-box/lib/python2.7/site-packages')
+site.addsitedir('/export/home/wdgweb-alpha/wdgweb-alpha.cv.nrao.edu/active/pyramid/lib/python2.7/site-packages')
 
 ini_path = os.path.dirname(__file__) + '/production.ini'
 setup_logging(ini_path)

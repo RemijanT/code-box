@@ -1,6 +1,6 @@
 <html>	
 	<head>
-		<link href="static/style/splatalogue.css" rel="stylesheet" type="text/css" media="screen">
+		<link href="${request.static_url('splatalogue:static/style/splatalogue.css')}" rel="stylesheet" type="text/css" media="screen">
 		<script src="static/scripts/jquery.min.js"></script>
 		<script src="static/scripts/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="saveRestoreForm.js"></script>
