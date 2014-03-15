@@ -338,14 +338,13 @@ def describe_results(req, name, amount, start,end):
 		print req['energy_range_type'] == "eu_k"
 		return found
 		
-#def extract(request, 'req'):
-#	for i in request.params:
-#		print i
-# 	globals().update({foo : '3'})
 	
-@view_config(route_name='query_ya_heard', renderer='splatalogue/mytemplate.pt')
-def build_query(req, offset = 0, limit = 4294967296):
-	extracted = extract(_REQUEST, EXTR_PREFIX_ALL, "req")
+@view_config(route_name='home', renderer='templates/mytemplate.pt')
+def build_query(request, offset = 0, limit = 4294967296):
+	extracted = extract(request, "req")
+	
+	try:
+	except:
 
 	select_where = []
 	select_fields = []
