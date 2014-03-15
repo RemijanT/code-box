@@ -1,0 +1,885 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Splatalogue</title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="" /> 
+		<link href="${request.static_url('splatalogue:static/style/splatalogue.css')}" rel="stylesheet" type="text/css" media="screen">
+		<script src="${request.static_url('splatalogue:static/scripts/jquery.min.js')}"></script>
+		<script src="${request.static_url('splatalogue:static/scripts/jquery-ui.min.js')}"></script>
+		<script type="text/javascript" src="saveRestoreForm.js"></script>
+
+    	<script type="text/javascript">
+        $(document).ready(function() {
+            $('#btnAdd').click(function() {
+                var num     = $('.clonedInput').length; // how many "duplicatable" input fields we currently have
+                var newNum  = new Number(num + 1);      // the numeric ID of the new input field being added
+ 
+                // create the new element via clone(), and manipulate it's ID using newNum value
+                var newElem = $('#input' + num).clone().attr('id', 'input' + newNum);
+ 
+                // manipulate the name/id values of the input inside the new element
+                //newElem.children('first').attr('id', 'freqmin' + newNum).attr('name', 'freqmin' + newNum);
+                //newElem.children('second').attr('id', 'freqmax' + newNum).attr('name', 'freqmax' + newNum); 
+
+                // New code B. Kent Sept. 29, 2012
+                newElem.find(':input').each(function() {
+                    var name = $(this).attr('name').replace(/\d+$/, '');
+                    $(this).attr({id: name + newNum, name: name + newNum});
+                });
+
+                // insert the new element after the last "duplicatable" input field
+                $('#input' + num).after(newElem);
+ 
+                // enable the "remove" button
+                $('#btnDel').attr('disabled','');
+ 
+                // business rule: you can only add 20 names
+                if (newNum == 20)
+                    $('#btnAdd').attr('disabled','disabled');
+            });
+ 
+            $('#btnDel').click(function() {
+                var num = $('.clonedInput').length; // how many "duplicatable" input fields we currently have
+                $('#input' + num).remove();     	// remove the last element
+ 
+                // enable the "add" button
+                $('#btnAdd').attr('disabled','');
+ 
+                // if only one element remains, disable the "remove" button
+                if (num-1 == 1)
+                    $('#btnDel').attr('disabled','disabled');
+            });
+ 
+                var num = $('.clonedInput').length; // how many "duplicatable" input fields we currently have
+                if (num-1 == 0)
+            $('#btnDel').attr('disabled','disabled');
+        });
+    </script>
+
+
+<script language="javascript">
+function reset_chemical_name_top20() {
+  document.qpsearch.chemical_name.value = "";
+  for (var i = 0; i < 8; i++) {
+  	document.qpsearch.top20[i].checked = false;
+  }
+}
+</script>
+
+<script language="javascript">
+function reset_qpicker_top20() {
+  for (var i = 0; i < 8; i++) {
+  document.qpsearch.top20[i].checked = false;
+  }
+  for (var j = 0; j < 23; j++) {
+  document.qpsearch['sid[]'][j].checked = false;
+  }
+}
+</script>
+
+<script language="javascript">
+function reset_qpicker_chemical_name() {
+  document.qpsearch.chemical_name.value = "";
+  for (var k = 0; k < 23; k++) {
+  document.qpsearch['sid[]'][k].checked = false;
+  }
+}
+</script>
+
+<script language="javascript">
+function reset_freq() {
+  document.qpsearch.from.value = "";
+  document.qpsearch.to.value = "";
+  document.qpsearch.from2.value = "";
+  document.qpsearch.to2.value = "";
+  document.qpsearch.from3.value = "";
+  document.qpsearch.to3.value = "";
+  document.qpsearch.from4.value = "";
+  document.qpsearch.to4.value = "";
+  document.qpsearch.from5.value = "";
+  document.qpsearch.to5.value = "";
+  document.qpsearch.from6.value = "";
+  document.qpsearch.to6.value = "";
+  document.qpsearch.from7.value = "";
+  document.qpsearch.to7.value = "";
+  document.qpsearch.from8.value = "";
+  document.qpsearch.to8.value = "";
+  document.qpsearch.from9.value = "";
+  document.qpsearch.to9.value = "";
+  document.qpsearch.from10.value = "";
+  document.qpsearch.to10.value = "";
+  document.qpsearch.from11.value = "";
+  document.qpsearch.to11.value = "";
+  document.qpsearch.from12.value = "";
+  document.qpsearch.to12.value = "";
+  document.qpsearch.from13.value = "";
+  document.qpsearch.to13.value = "";
+  document.qpsearch.from14.value = "";
+  document.qpsearch.to14.value = "";
+  document.qpsearch.from15.value = "";
+  document.qpsearch.to15.value = "";
+  document.qpsearch.from16.value = "";
+  document.qpsearch.to16.value = "";
+  document.qpsearch.from17.value = "";
+  document.qpsearch.to17.value = "";
+  document.qpsearch.from18.value = "";
+  document.qpsearch.to18.value = "";
+  document.qpsearch.from19.value = "";
+  document.qpsearch.to19.value = "";
+  document.qpsearch.from20.value = "";
+  document.qpsearch.to20.value = "";
+}
+</script>
+
+<script language="javascript">
+function reset_band() {
+  document.qpsearch.band.value = "any";
+}
+</script>
+
+<script language="javascript">
+function reset_freq_energy() {
+  document.qpsearch.frequency_units.value = "GHz";
+  document.qpsearch.from.value = "";
+  document.qpsearch.to.value = "";
+  document.qpsearch.energy_range_from.value = "";
+  document.qpsearch.energy_range_to.value = "";
+  document.qpsearch.energy_range_type.value = "el_cm1";
+  document.qpsearch.from2.value = "";
+  document.qpsearch.to2.value = "";
+}
+</script>
+
+<script language="javascript">
+function reset_band_energy() {
+  document.qpsearch.band.value = "any";
+  document.qpsearch.energy_range_from.value = "";
+  document.qpsearch.energy_range_to.value = "";
+  document.qpsearch.energy_range_type.value = "el_cm1";
+  document.qpsearch.from2.value = "";
+  document.qpsearch.to2.value = "";
+}
+</script>
+
+<script language="javascript">
+function reset_band_freq() {
+  document.qpsearch.band.value = "any";
+  document.qpsearch.frequency_units.value = "GHz";
+  document.qpsearch.from.value = "";
+  document.qpsearch.to.value = "";
+  document.qpsearch.from2.value = "";
+  document.qpsearch.to2.value = "";
+}
+</script>
+
+<script>
+  $(document).ready(function() {
+    $("input#autocomplete").autocomplete({
+    source: ["1,3,5-Hexatriynyl", "1,3-Butadiynyl radical", "2,4,6-Heptatriynenitrile", "3-Oxo-1,2-Propadienylidene", "Aluminum Monochloride", "Ammonia", "Atomic Carbon", "Atomic Nitrogen", "Atomic Oxygen", "Butatrienylidene", "Carbon Monoxide", 
+"Cyanobutadiyne (HC5N v11 = 1)",
+"Formic Acid (t-H(13)COOH)",
+"Carbon Monoxide ((13)CO v=0)",
+"Carbon Monosulfide ((13)C(34)S v=0)",
+"Carbon Monosulfide (CS v=0)",
+"Formylium (D(13)CO+)",
+"Atomic Carbon ((13)C)",
+"Silicon tetracarbide (SiC4)",
+"Carbon Monoxide ((13)C(18)O)",
+"Ketenimine (H2CCNH)",
+"Silicon Monoxide (SiO v=0)",
+"Silicon Monoxide (SiO v=1)",
+"Silicon Monoxide (SiO v=2)",
+"Silicon Monoxide (SiO v=3)",
+"Silicon Monoxide (SiO v=4)",
+"Silicon Monoxide (SiO v=5)",
+"Silicon Monoxide (SiO v=6)",
+"Ethylene Oxide (c-H2COCH2)",
+"Carbon Monophosphide (CP)",
+"Hydrogen Cyanide (DCN v=0)",
+"Sulfur Monoxide ((34)SO)",
+"Cyanobutadiyne (HCC(13)CCCN)",
+"Carbon Monosulfide (C(36)S v = 0)",
+"Silicon Mononitride (SiN)",
+"Cyanoacetylene (HC3N v7=1)",
+"Formylium (H(13)CO+)",
+"Cyanide Radical (CN v=0)",
+"Ammonia (ND3)",
+"Ketene (H2CCO)",
+"Propadienylidene (l-H2CCC)",
+"Cyanoacetylene (HC3N v6=1,v7=1)",
+"Trihydrogen ion (H2D+)",
+"Sodium Chloride (NaCl v=0)",
+"Propynylidyne (l-C3H v=0)",
+"Methanol (CH3OH vt=0)",
+"2,4,6-Heptatriynenitrile (HC7N v=0)",
+"Diazenylium (N2D+)",
+"Sulfur Dioxide ((33)SO2)",
+"Silicon Isocyanide (SiNC 2P1/2)",
+"1,3-Butadiynyl radical (C(13)CCCH)",
+"1,3,5-Hexatriynyl (C6H)",
+"Cyanide Radical ((13)CN)",
+"Thioformaldehyde (D2CS)",
+"Nitrosyl cyanide (ONCN)",
+"Ammonia (NH2D)",
+"Sulfur Dioxide ((34)SO2 v=0)",
+"Iminomethylium (HCNH+)",
+"Sulfur dioxide (SO2 v=0)",
+"Hydrogen Isocyanide (HNC v=0)",
+"Cyanoethynyl (CC(13)CN)",
+"2,4-Pentadiynylidyne (l-C5H)",
+"Formaldehyde (D2CO)",
+"1,3-Butadiynyl radical (C4H v=0)",
+"Magnesium Isocyanide (MgNC v = 0)",
+"Silicon Monoxide ((29)SiO v=0)",
+"Aluminum Isocyanitrile (AlNC)",
+"1,3,5-Hexatriynyl anion (C6H-)",
+"Formaldehyde (HDCO)",
+"2,4,6,8,10-Undecapentaynenitrile (HC11N)",
+"Fluoromethyliumylidene (CF+ v=0)",
+"Silicon Monoxide (Si(18)O v = 0)",
+"Carbon Monosulfide (C(34)S v=0)",
+"Carbon monosulfide (CS v=1-0)",
+"Ethylene Glycol (g'Ga-(CH2OH)2)",
+"Atomic Carbon (C)",
+"Silicon Cyanide (SiCN 2P1/2)",
+"2,4,6-Heptatriynylidyne (C7H)",
+"Cyanoacetylene (HC(13)CCN v6=1)",
+"4-Cyano-1,3-Butadiynyl (C5N)",
+"Cyclopropenone (c-H2C3O)",
+"Hydrogen Cyanide (H(13)CN v=0)",
+"Isothiocyanic acid (HNCS a-type)",
+"Thioformaldehyde (HDCS)",
+"Formylium (HC(17)O+)",
+"Carbon Monosulfide ((13)CS v=0)",
+"Methyl diacetylene (CH3C4H)",
+"Cyanoacetylene (HC3N v6=1)",
+"Diazenylium (N2H+ v=0)",
+"Sulfur Dioxide (OS(18)O)",
+"Potassium chloride (K(37)Cl v = 0)",
+"Formaldehyde (H2C(18)O)",
+"Glycolaldehyde (cis-CH2OHCHO v=0)",
+"2-Butynenitrile (CH3C3N)",
+"Hydroxymethylidyne (HOC+ v = 0)",
+"Formic Acid (t-HCOOH)",
+"Protonate 2-proynenitrile (HC3NH+)",
+"Trihydrogen ion (HD2+)",
+"2,4,6,8-Nonatetraynenitrile (HC9N)",
+"Carbonyl Sulfide ((18)OCS)",
+"1,3-Butadiynyl radical (C4D)",
+"Molecular Hydrogen (HD v=0)",
+"Carbonyl Sulfide (O(13)CS)",
+"Ethynyl (CCD)",
+"Methylene (CH2)",
+"Methylidyne (CH 2P1/2)",
+"Potassium chloride (KCl v = 0)",
+"Formaldehyde (H2CO)",
+"Hydrogen Cyanide (DCN v2=1)",
+"3-Cyano-1,2-propadienylidene (l-HC4N)",
+"Cyanoacetylene (HCCC(15)N)",
+"Carbon Monoxide (CO v=0)",
+"Methyl Acetylene (CH3CCD)",
+"Thioformaldehyde (H2CS)",
+"Cyanoethynyl (CCCN v=0)",
+"Vinyl Alcohol (a-H2CCHOH)",
+"Cyanobutadiyne (HCCCC(13)CN)",
+"Methylcyanodiacetylene (CH3C5N)",
+"Phosphaethyne (HCP v=0)",
+"Cyanoacetylene (HC(13)CCN v7 = 1)",
+"Cyanoformaldehyde (CNCHO)",
+"Hydroxymethylium ion (H2COH+)",
+"Cyanoacetylene (HCC(13)CN)",
+"Carbon Monoxide (C(17)O)",
+"Formylium (HC(18)O+)",
+"Thioformaldehyde (H2(13)CS)",
+"Sulfur Monoxide ((33)SO)",
+"Diazenylium ((15)NNH+)",
+"Cyanoacetylene (HC3N v4=1,v7=1)",
+"Cyanoacetylene (H(13)CCCN)",
+"Carbon Monoxide (C(18)O)",
+"Thioformylium (HCS+)",
+"Thioxoethenylidene (CCS)",
+"Cyanoacetylene (HC(13)CCN v7=2)",
+"Hydrogen Cyanide (HC(15)N v=0)",
+"Formylium (DCO+ v=0)",
+"Hydrogen Cyanide (HCN v=0)",
+"Cyanobutadiyne (HCCC(13)CCN)",
+"Silicon Monocarbide (SiC v=0)",
+"Carbon Monoxide ((13)C(17)O)",
+"Ethynyl ((13)CCH)",
+"Carbonyl Sulfide (OC(34)S)",
+"Cyanobutadiyne (H(13)CCCCCN)",
+"Cyanoacetylene (DC3N)",
+"1,3-Butadiynyl radical (CCC(13)CH)",
+"Sulfur Monoxide (SO 3Sigma v=0)",
+"1,3-Butadiynyl radical ((13)CCCCH)",
+"Ethynyl (CCH v=0)",
+"Ammonia (NHD2)",
+"1,3,5,7-Octatetraynyl (C8H)",
+"1,3-Butadiynyl radical (C4H v7 = 2 l=0)",
+"Sulfur Monoxide (S(18)O)",
+"Silicon Monoxide ((30)SiO v=0)",
+"Cyanoacetylene (HC3N v=0)",
+"Hydrogen Isocyanide (DNC)",
+"Cyanoethynyl ((13)CCCN)",
+"Carbon Monosulfide   (C(33)S v=0)",
+"Cyanoacetylene (HC(13)CCN)",
+"Copper hydride ((65)CuH)",
+"Methyl Acetylene (CH2DCCH)",
+"Hydrogen Cyanide (HCN v2=1)",
+"Methyl Acetylene (CH3CCH v=0)",
+"Cyanobutadiyne (DCCCCCN)",
+"Cyanoacetylene (H(13)CCCN v7=2)",
+"Carbonyl Sulfide (OCS v=0)",
+"Methanol ((13)CH3OH vt=0)",
+"Cyanoacetylene (H(13)CCCN v7 = 1)",
+"Cyanoallene (H2CCCHCN)",
+"Formaldehyde (H2(13)CO)",
+"Cyanoacetylene (HC3N v7=2)",
+"Carbon trimer (C3)",
+"Hydrogen Cyanide (H(13)CN v2=1)",
+"Cyanobutadiyne (HC5N)",
+"1,3-Butadiynyl radical (CC(13)CCH)",
+"Methylene amidogen (H2CN)",
+"Amidogen (NH2)",
+"3-Oxo-1,2-Propadienylidene (CCCO)",
+"3-Thioxo-1,2-Propadieylidene (CCCS)",
+"Ethynyl (C(13)CH)",
+"Sulfur Dioxide (OS(17)O)",
+"Diazenylium (N(15)NH+)",
+"Cyanoacetylene (HC3N v4=1)",
+"1,3-Butadiynyl radical (C4H v7 = 1)",
+"Cyanide Radical (C(15)N)",
+"Cyanoethynyl (C(13)CCN)",
+"3-Silanetetrayl-1,2-Propadienylidene  (c-SiC3)",
+"Hexatrienyl (l-C6H2)",
+"Vinyl Alcohol (s-H2CCHOH)",
+"Butatrienylidene (l-C4H2)",
+"Thioformaldehyde (H2C(34)S)",
+"Methyltriacetylene (CH3C6H)",
+"Hydrochloric acid (H(37)Cl)",
+"Methyl Formate (CH3OCHO v=0)",
+"Formic Acid (t-HCOOD)",
+"Methyl Cyanide (CH3(13)CN)",
+"Hydrogen sulfide (HDS)",
+"Aluminum Monofluoride (AlF v=0)",
+"Cyclopropenylidene (c-HCC(13)CH)",
+"Water (H2O v=0)",
+"Protonated Carbon Dioxide (HOCO+)",
+"Aluminum Monochloride (Al(37)Cl v=0)",
+"trans-Ethanol (t-CH3CH2OH)",
+"Methyl isocyanide (CH3NC)",
+"Cyanamide (NH2CN)",
+"Magnesium Cyanide (MgCN)",
+"Nitrous Oxide (N2O v=0)",
+"Oxoethenylidene (CCO)",
+"Lithium Hydride (LiH v=0)",
+"Isocyanic Acid (DNCO)",
+"Methyliumylidene (CH+)",
+"Water (HDO)",
+"Hydrogen Isocyanide (HN(13)C)",
+"Phosphorous nitride (PN v=0)",
+"Methyl Acetylene (CH3C(13)CH)",
+"Ammonia ((15)NH3)",
+"Methyl Acetylene ((13)CH3CCH)",
+"Hydrogen Isocyanide (H(15)NC)",
+"Molecular oxygen (O2 v=0)",
+"Ammonia (NH3 v2=1)",
+"Silicon Carbide (SiC2 v=0)",
+"Cyclopropenylidene (c-HCCCH v=0)",
+"Dimethyl ether (CH3OCH3)",
+"Silicon monosulfide (Si(34)S v=0)",
+"Sulfur Monoxide ion (SO+)",
+"Cyclopropenylidene (c-HCCCD)",
+"Aluminum Monochloride (AlCl v=0)",
+"Hydroxyl (OH v=0)",
+"3-Imino-1,2 Propadienylidene (HNCCC)",
+"Acetaldehyde (CH3CHO vt=0)",
+"Hydrogen fluoride (HF)",
+"Phosphorus Monoxide (PO)",
+"Sulfur dioxide (SO2 v2=1)",
+"Ethyl Cyanide (CH3CH2CN v=0)",
+"Ethyl Cyanide ((13)CH3CH2CN)",
+"Vinyl Cyanide  ((13)CH2CHCN)",
+"Thioxoethenylidene (C(13)CS)",
+"Ethyne Isocyanide (HCCNC v=0)",
+"Formamide (NH2CHO)",
+"Cyanobutadiyne (HC(13)CCCCN)",
+"Hydrogen sulfide (H2S)",
+"Silicon monosulfide   ((29)SiS v=0)",
+"2,4-Pentadiynylidyne (l-C5D)",
+"Nitric sulfide (NS, v=0)",
+"Silicon monosulfide ((30)SiS v=0)",
+"Methyl Cyanide (CH3CN v=0)",
+"Nitric sulfide (N(34)S)",
+"Nitrosyl hydride (HNO)",
+"Methyl Cyanide (CH3C(15)N)",
+"Water (H2(18)O v=0)",
+"Thioxoethenylidene ((13)CCS)",
+"Ethyl Cyanide (CH3CH2(13)CN)",
+"Water (H2O v2=1)",
+"Ammonia (NH3 v=0)",
+"Vinyl Cyanide  (CH2(13)CHCN)",
+"Methyl Cyanide ((13)CH3CN)",
+"Silicon monosulfide   (SiS v=0)",
+"Hydrochloric acid (HCl)",
+"Methanimine (CH2NH)",
+"Hydroxyl (18OH)",
+"Isocyanic Acid (HNCO v=0)",
+"Cyclopropenylidene (c-H(13)CCCH)",
+"Thioxoethenylidene (CC(34)S)",
+"Atomic Deuterium (D)",
+"Atomic Hydrogen (H)",
+"Formic Acid (t-DCOOH)",
+"Vinyl Cyanide  (CH2CH(13)CN)",
+"Carbon Monoxide Ion (CO+)",
+"Nitric oxide (NO)",
+"Ethyl Cyanide (CH3(13)CH2CN)",
+"Formyl Radical (HCO)",
+"2-Propynal (HCCCHO)",
+"Sodium Cyanide (NaCN/NaNC)",
+"Cyanomethyl (CH2CN)",
+"Vinyl Cyanide (CH2CHCN v=0)",
+"Hydrogen sulfide (H2(34)S)",
+"Silicon Carbide (Si(13)CC)",
+"Hydroxyl ((17)OH)",
+"Hydrogen Isocyanide (D(15)NC)",
+"Methanol (CH3OD)",
+"Acetone ((CH3)2CO v=0)",
+"Methylamine (CH3NH2)",
+"Silicon monosulfide (Si(33)S v=0)",
+"Methyl Mercaptan (CH3SH v=0)",
+"Silicon Carbide ((30)SiC2)",
+"Propenal (t-CH2CHCHO)",
+"Silicon Carbide ((29)SiC2)",
+"Methanol (CH2DOH)",
+"Formamide (NH2(13)CHO)",
+"Magnesium Isocyanide ((26)MgNC)",
+"Methanol (CH3(18)OH)",
+"Methyl Cyanide (CH3CN v8=1)",
+"Methanol (CHD2OH)",
+"Silicon monosulfide   ((30)Si(34)S v=0)",
+"Acetic Acid (CH3COOH v=0)",
+"Methylidyne (CH 2P3/2)",
+"Carbon Monosulfide (CS v=1)",
+"Hydrogen Cyanide (HCN v2=2)",
+"Hydrogen Cyanide (HCN v3=1)",
+"Hydrogen Cyanide (HCN v1=1)",
+"Hydrogen Isocyanide (HNC v2=1)",
+"Hydrogen Recombination Line (H(alpha))",
+"Methanol (CH3OH vt=1)",
+"Methanol ((13)CH3OH vt=1)",
+"Methanol (CD3OH)",
+"Carbon Monoxide (CO v=1)",
+"Carbon Monosulfide (C(34)S v=1)",
+"Acetaldehyde (CH3CHO vt=1)",
+"Acetaldehyde (CH3CHO vt=2)",
+"gauche-Ethanol (g-CH3CH2OH)",
+"Cyanoacetylene (HC3N v7=3)",
+"Cyanoacetylene (HC3N v5=1)",
+"Vinyl Cyanide (CH2CHCN v11=1)",
+"Vinyl Cyanide (CH2CHCN v11=2)",
+"Vinyl Cyanide (CH2CHCN v15=1)",
+"Ethyl Cyanide (CH3CH2CN v=1)",
+"Propanal (CH3CH2CHO)",
+"1,3-Butadiynyl anion (C4H-)",
+"1,3,5,7-Octatetraynyl anion (C8H-)",
+"Hydrogen sulfide (D2S)",
+"Silicon Monoxide ((29)SiO v=1)",
+"Silicon Monoxide ((29)SiO v=2)",
+"Silicon Monoxide ((30)SiO v=1)",
+"Silicon Monoxide ((30)SiO v=2)",
+"Silicon monosulfide (SiS v=1)",
+"Silicon monosulfide (SiS v=2)",
+"Silicon monosulfide (SiS v=3)",
+"Acetamide (CH3CONH2)",
+"Hydrogen Recombination Line (H(beta))",
+"Hydrogen Recombination Line (H(gamma))",
+"Hydrogen Recombination Line (H(delta))",
+"Hydrogen Recombination Line (H(epsilon))",
+"Hydrogen Recombination Line (H(zeta))",
+"Helium Recombination Line (He(alpha))",
+"Helium Recombination Line (He(beta))",
+"Helium Recombination Line (He(gamma))",
+"Helium Recombination Line (He(delta))",
+"Carbon Recombination Line (C(alpha))",
+"Carbon Recombination Line (C(beta))",
+"Carbon Recombination Line (C(gamma))",
+"Hydrogen Cyanide (HCN v2=4)",
+"Hydrogen Cyanide (HCN v2=1^1-v2=4^0)",
+"Formylium (HCO+ v=0)",
+"Cyanoacetylene (HC3N v5=1,v7=1)",
+"Cyanoacetylene (HC3N v6=1, v7=2)",
+"Cyanoacetylene (HC3N v6=2)",
+"Cyanoacetylene (HC3N v7=4)",
+"Isocyanic Acid (HNCO v4=1)",
+"Isocyanic Acid (HNCO v5=1)",
+"Isocyanic Acid (HNCO v6=1)",
+"Cyanoethynylide ion (C3N-)",
+"Silicon Carbide (SiC2 v3=1)",
+"Phosphapropynylidyne (CCP)",
+"Aminoacetonitrile (H2NCH2CN)",
+"Acetone ((CH3)2CO vt=1)",
+"Cyanobutadiynylide anion (C5N-)",
+"Methyl Formate (CH3OCHO v=1)",
+"Fulminic acid (HCNO)",
+"Cyanic acid (HOCN)",
+"Atomic Carbon (CII)",
+"Atomic Helium (3He+)",
+"Atomic Nitrogen (NII)",
+"Atomic Oxygen (OI)",
+"Atomic Oxygen (OIII)",
+"Atomic Carbon (13CII(13))",
+"ortho-Oxidaniumyl (o-H2O+)",
+"para-Oxidaniumyl (p-H3O+)",
+"Propynylidynium (C3H+)",
+"Cyanomethanimine (E-HNCHCN)",
+"Cyanide Radical",
+"CS", "Cyanoacetylene", "Cyanobutadiyne", "Cyanoethynyl", "Cyclopropenylidene", "DCN", "DCO+", "Diazenylium", "Ethyl Cyanide", "Ethynyl", "Formaldehyde", "Formic Acid", "Formylium", "H", "H2O", "HCO+", "HCN", "Hydrogen Cyanide", "Hydrogen Isocyanide", "Hydrogen Recombination Line", "Hydrogen sulfide", "Hydroxyl", "Hydroxymethylidyne", "Isocyanic Acid", "Ketene", "Lithium Hydride", "Methanol", "Methyl Acetylene", "Methyl Cyanide", "Molecular oxygen", "NH3", "Nitric acid", "Nitric sulfide", "Nitrous Oxide", "O2", "OH", "Phosphorous nitride", "Potassium chloride", "Propadienylidene", "Propynylidyne", "Silicon carbide", "Silicon monosulfide", "Silicon Monoxide", "Silicon tetracarbide", "Sodium Chloride", "Sulfur Dioxide", "Sulfur Monoxide", "Thioformaldehyde", "Vinyl Cyanide", "Water"]
+});
+  });
+		</script>
+
+	</head>
+
+	<body>
+
+		<!-- This is the "master" table, containing all three smaller tables in the top view (above the <hr>) -->
+		<table id="menu">
+			<tr>
+				<div id="menu">
+					<td><div id="menu"><ul><li><a href="https://wdgweb-alpha.nrao.edu/splatPython/">Basic</a></li></ul></div></td>
+					<td><div id="menu"><ul><li><a href="http://splatalogue.net/advanced.php">Advanced</a></li></ul></div></td>
+					<td><div id="menu"><ul><li><img src="${request.static_url('splatalogue:static/images/exp.png')}"></li></ul></div></td>
+				</div>
+			</tr>
+		</table>
+		
+		<table align=center>
+			<tr>
+				<td>
+					<table class="basic_left">
+						<thead>
+							<tr>
+								<th colspan=2>
+									<font color=blue>
+										Quick Picker
+									</font>
+								<th>
+							</tr
+						<thead>
+			
+						<tbody>
+							<tr>
+								<td> 
+									CO <font color="red">v = 0</font> <input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="204">
+								</td>
+								<td> 
+									<sup>13</sup>CO <font color="red">v = 0</font> <input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="4">
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									C<sup>17</sup>O<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="226"> 
+								</td>
+								<td> 
+									C<sup>18</sup>O<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="245"> 
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									CH<sub>3</sub>OH <font color="red">v<sub>t</sub> = 0</font><input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="55"> 
+								</td>
+								<td> 
+									H<sub>2</sub>CO <input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="194">
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									HCN  <font color="red">v = 0</font><input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="258"> 
+								</td>
+								<td> 
+									HNC <font color="red">v = 0</font> <input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="82">
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									H<sup>13</sup>CN  <font color="red">v = 0</font><input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="137"> 
+								</td>
+								<td> 
+									HC<sup>15</sup>N <font color="red">v = 0</font> <input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="255">
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									DCN <font color="red">v = 0</font><input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="23"> 
+								</td>
+								<td> 
+									HCO<sup>+</sup> <font color="red">v = 0</font> <input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="15">
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									CS<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="6"> 
+								</td>
+								<td> 
+									H<sup>13</sup>CO<sup>+</sup><input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="38"> 
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									NH<sub>3</sub><input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="638"> 
+								</td>
+								<td> 
+									C I<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="125">  
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									C II<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="1364">  
+								</td>
+								<td> 
+									O I<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="1367">  
+								</td>
+							</tr>
+							<tr>
+								<td>
+									O III<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="1368">  
+								</td>
+								<td> 
+									N II<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="1366">  
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									H<sub>2</sub>O <font color="red">v = 0</font> <input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="418">
+								</td>
+								<td> 
+									HDO<input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="472">  
+								</td>
+							</tr>
+							<tr>
+								<td colspan=2> 
+									SiO <font color="red">v = 0</font><input type="checkbox" name="sid[]" onclick="reset_chemical_name_top20()" value="20"> 
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>
+					<table class="basic_center">
+						<thead>
+							<tr>
+								<th colspan=2 align=center>
+									<img src="${request.static_url('splatalogue:static/images/splat_logo.png')}" alt="" width="450">
+								</th>
+							</tr>
+						</thead>
+					
+						<tbody>	
+							<tr> 
+								<td>
+									Search: 
+								</td>
+								<td align="right">
+									<input id="autocomplete" type="text" name="chemical_name" onclick="reset_qpicker_top20()" placeholder="ex: ammonia, carbon monoxide, methanol, water, CO, NH3 etc." size="40">
+								</td> 
+							</tr>
+							<tr>
+								<td>
+									Redshift:
+								</td>
+								<td align="right">
+									<input type="text" name="z" placeholder="0.0" size="14">
+								</td>
+							</tr>
+							<tr>
+								 <td>
+									Telescope Bands:
+								 </td>
+								 <td align="right">
+								 
+									<select size="1" name="band">
+									
+									   <option value="any" selected>Any</option>
+									   <option value="alma3" onclick="reset_freq()">ALMA Band 3 (84-116 GHz)</option>
+									   <option value="alma4" onclick="reset_freq()">ALMA Band 4 (125-163 GHz)</option>
+									   <option value="alma5" onclick="reset_freq()">ALMA Band 5 (163-211 GHz)</option>
+									   <option value="alma6" onclick="reset_freq()">ALMA Band 6 (211-275 GHz)</option>
+									   <option value="alma7" onclick="reset_freq()">ALMA Band 7 (275-373 GHz)</option>
+									   <option value="alma8" onclick="reset_freq()">ALMA Band 8 (385-500 GHz)</option>
+									   <option value="alma9" onclick="reset_freq()">ALMA Band 9 (602-720 GHz)</option>
+									   <option value="alma10" onclick="reset_freq()">ALMA Band 10 (787-950 GHz)</option>
+									   <option value="pf1" onclick="reset_freq()">GBT PF1 (0.29-0.92 GHz)</option>
+									   <option value="pf2" onclick="reset_freq()">GBT PF2 (0.91-1.23 GHz)</option>
+									   <option value="l" onclick="reset_freq()">GBT/VLA L (1-2 GHz)</option>
+									   <option value="s" onclick="reset_freq()">GBT/VLA S (1.7-4 GHz)</option>
+									   <option value="c" onclick="reset_freq()">GBT/VLA C (3.9-8 GHz)</option>
+									   <option value="x" onclick="reset_freq()">GBT/VLA X (8-12 GHz)</option>
+									   <option value="ku" onclick="reset_freq()">GBT/VLA Ku (12-18 GHz)</option>
+									   <option value="kfpa" onclick="reset_freq()">GBT KFPA (18-27.5 GHz)</option>
+									   <option value="k" onclick="reset_freq()">VLA K (18-26.5 GHz)</option>
+									   <option value="ka" onclick="reset_freq()">GBT/VLA Ka (26-40 GHz)</option>
+									   <option value="q" onclick="reset_freq()">GBT/VLA Q (38-50 GHz)</option>
+									   <option value="w" onclick="reset_freq()">GBT W (67-93.3 GHz)</option>
+									   <option value="mustang" onclick="reset_freq()">GBT Mustang (80-100 GHz)</option>
+									   
+									</select>
+									
+								 </td>
+								 
+							</tr>
+	
+							<tr> 
+								<td>
+									Energy Range:&nbsp; &nbsp;
+								</td>
+								<td align="right">     
+									Min <input type="text" name="energy_range_from" size="8">
+									Max <input type="text" name="energy_range_to" size="8">
+								</td>
+							</tr>
+							
+							<tr> 
+								<td>
+								</td>
+								<td align="right">     
+									 E<sub>L</sub> (cm<sup>-1</sup>)<input type="radio" name="energy_range_type" value="el_cm1" checked>
+									 E<sub>L</sub> (K)<input type="radio" name="energy_range_type" value="el_k">
+								 </td>
+							</tr>
+							<tr>
+								 <td>Frequency Range:</td>
+								 <td align="right">
+								 <div id="input1" style="margin-bottom:2px;" class="clonedInput">
+								 Min <input type="text" name="from" id="from" onclick="reset_band()" size="8"> 
+								 Max <input type="text" name="to" id="to" onclick="reset_band()" size="8">
+								 </div>
+								 </td>
+							</tr>
+							
+							<tr>
+								<td></td>
+								 <td align="right">
+								   <div>&nbsp; &nbsp;&nbsp; &nbsp;
+								   <input type="button" id="btnAdd" value="+ Frequency" />&nbsp; &nbsp;&nbsp;
+								   <input type="button" id="btnDel" value="- Frequency" />
+								   </div>
+								 </td>
+							</tr>
+							<tr> 
+								 <td>Frequency Unit:</td>
+								 <td align="right">
+									<select size="1" name="frequency_units">
+										<option value="Hz">Hz
+										<option value="KHz">KHz
+										<option value="MHz">MHz
+										<option value="GHz" selected>GHz
+										<option value="THz">THz
+										<option value="a">&#8491;
+										<option value="nm">nm
+										<option value="mum">&mu;m
+										<option value="mm">mm
+										<option value="cm">cm
+										<option value="m">m
+									</select>
+								 </td>
+							</tr>
+						</tbody>
+					</table>
+					<table>
+						<tr class="basic_center_no_color">
+         
+    						<td colspan=2 align=right>
+        						<input name="submit" type="submit" value="Search" class="submit_button">
+    						</td>
+    					</tr>
+    				</table>
+				</td>	
+				<td>
+					<table class="basic_right">
+						<thead>
+							<tr>
+								<th> 
+									<font color=blue>Astronomical Filters</font>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									(Double click to unselect) 
+								</td>
+							</tr>
+							<tr>
+								<td> 
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="Top20">&nbsp;Top 20 list
+								</td>
+							</tr>
+							<tr>
+								<td>  
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="planet">&nbsp; Planetary Atmosphere
+								</td>
+							</tr>
+							<tr>
+								<td>  
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="ism_hotcore">&nbsp; Hot Cores
+								</td>
+							</tr>
+							<tr>
+								<td>  
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="ism_darkcloud">&nbsp; Dark Clouds
+								</td>
+							</tr>
+							<tr>
+								<td>  
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="ism_diffusecloud">&nbsp; Diffuse Clouds
+								</td>
+							</tr>
+							<tr>
+								<td>  
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="comet">&nbsp; Comets
+								</td>
+							</tr>
+							<tr>
+								<td>  
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="AGB_PPN_PN">&nbsp; AGB/PPN/PN
+								</td>
+							</tr>
+							<tr>
+								<td>  
+									<input type="radio" name="top20" onclick="reset_qpicker_chemical_name()" ondblclick="this.checked = false" value="extragalactic">&nbsp; Extragalactic
+								</td>
+							</tr>
+		
+							<tr><td> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<img src="${request.static_url('splatalogue:static/images/sp_mobile2.png')}" alt="sp_mobile.png" width="80"> <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<font color=blue>Scan to Mobile Splat</font></td></tr>
+						</tbody>
+				   </table>	
+				</td>
+			</tr>		
+		</table>
+		
+		<div class="bottom">
+			<hr>
+			<tal:if define="cond python:retval.err_status">
+        		<tal:then condition="cond">
+        			<p class="indent">
+                		${retval.err_message}
+                	</p>
+        		</tal:then>
+        		<tal:else condition="not: cond">
+                	False
+        		</tal:else>
+			</tal:if>
+
+			
+			
+		</div>
+		
+		<hr>
+		<div class="footer">
+			<p>&copy;2012 All Rights Reserved. &nbsp;&bull;&nbsp; Splatalogue.net. &nbsp;&bull;&nbsp; Last built on ${retval.modifieddate}.</p>
+			 
+		</div>
+	</body>
+</html>

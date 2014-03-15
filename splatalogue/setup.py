@@ -7,7 +7,11 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
+<<<<<<< HEAD
     'pyramid==1.3',
+=======
+    'pyramid==1.4',
+>>>>>>> 9209a515e33cd54995c284f7f8e03c727b048cbd
     'transaction',
     'pyramid_tm',
     'pyramid_debugtoolbar',
